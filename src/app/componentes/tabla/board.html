@@ -1,0 +1,122 @@
+@if (tablero) {
+<div class="board-container" [style.background-color]="tablero.fondo">
+    <header class="board-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+            <h1 class="section-title" style="margin-bottom: 0.5rem;">{{ tablero.nombre }}</h1>
+            <p class="date-text" style="font-size: 1.1rem; margin-bottom: 3rem;">{{ tablero.descripcion }}</p>
+        </div>
+        <button class="btn-primary-custom" (click)="showAddColModal = true" style="max-width: 200px;">+ Añadir
+            Columna</button>
+    </header>
+
+    <div class="board-columns">
+        @for (columna of columnas; track columna.id) {
+        <div class="column-wrapper" style="display: flex; flex-direction: column;">
+            <div class="column" [style.border-top]="'4px solid ' + columna.color" style="margin-bottom: 0;">
+                <div class="column-header">
+                    <h3 [style.color]="columna.color">{{ columna.nombre }}</h3>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="count-badge">{{ getTareasColumna(columna.id).length }}</span>
+                        <button class="delete-btn-mini" (click)="eliminarColumna(columna.id)">×</button>
+                    </div>
+                </div>
+
+                <div class="tasks-container" (dragover)="onDragOver($event)" (drop)="onDrop($event, columna.id)">
+                    @for (tarea of getTareasColumna(columna.id); track tarea.id) {
+                    <div class="task-card" draggable="true" (dragstart)="onDragStart($event, tarea.id, columna.id)">
+                        <div class="task-header">
+                            <div class="task-title">{{ tarea.nombre }}</div>
+                            <button class="delete-btn-mini" (click)="eliminarTarea(tarea.id)">×</button>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">{{ tarea.descripcion }}</p>
+                        <div class="task-footer">
+                            <span class="user-badge-mini" [title]="tarea.usuario.nombre + ' ' + tarea.usuario.apellido">
+                                {{ tarea.usuario.nombre.charAt(0) }}{{ tarea.usuario.apellido.charAt(0) }}
+                            </span>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <span class="date-text"
+                                    style="background: var(--bg-surface-hover); padding: 2px 6px; border-radius: 4px;">{{
+                                    tarea.estimacion }}h</span>
+                                <span class="date-text">{{ tarea.fecha_creacion | date:'dd MMM' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <button class="btn-add-sidebar" (click)="abrirModalTarea(columna.id)"
+                style="margin-top: 1rem; border-style: dashed; border-width: 2px; justify-content: center;">
+                + Añadir Tarea
+            </button>
+        </div>
+        }
+    </div>
+</div>
+}
+
+<!-- Add Column Modal -->
+@if (showAddColModal) {
+<div class="modal-backdrop-custom" (click)="showAddColModal = false">
+    <div class="modal-custom" (click)="$event.stopPropagation()">
+        <h2 class="section-title" style="font-size: 1.75rem; margin-bottom: 2rem;">Nueva Columna</h2>
+        <div class="form-group">
+            <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Nombre de la
+                columna</label>
+            <input type="text" [(ngModel)]="colNombre" placeholder="P. ej. En Revisión" class="input-custom">
+        </div>
+        <div class="form-group" style="margin-top: 1.5rem;">
+            <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Color de
+                fondo</label>
+            <input type="color" [(ngModel)]="colColor" class="input-custom"
+                style="height: 50px; padding: 0; background: transparent;">
+        </div>
+        <div class="modal-actions-custom">
+            <button class="btn-secondary-custom" (click)="showAddColModal = false">Descartar</button>
+            <button class="btn-primary-custom" (click)="crearColumna()">Añadir Columna</button>
+        </div>
+    </div>
+</div>
+}
+
+<!-- Add Task Modal -->
+@if (showAddTaskModal) {
+<div class="modal-backdrop-custom" (click)="showAddTaskModal = false">
+    <div class="modal-custom" (click)="$event.stopPropagation()">
+        <h2 class="section-title" style="font-size: 1.75rem; margin-bottom: 2rem;">Nueva Tarea</h2>
+        <div class="form-group">
+            <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Título de la
+                tarea</label>
+            <input type="text" [(ngModel)]="taskNombre" placeholder="P. ej. Fix bug #123" class="input-custom">
+        </div>
+        <div class="form-group" style="margin-top: 1.5rem;">
+            <label
+                style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Descripción</label>
+            <textarea [(ngModel)]="taskDesc" placeholder="Detalles de lo que hay que hacer..." class="input-custom"
+                style="height: 100px; resize: none;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <div class="form-group" style="flex: 1;">
+                <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Estimación
+                    (Horas)</label>
+                <input type="number" [(ngModel)]="taskEstimacion" placeholder="0" class="input-custom" min="0">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Asignar
+                    Usuario</label>
+                <select [(ngModel)]="taskUsuarioId" class="input-custom">
+                    <option [ngValue]="null" disabled>Seleccionar...</option>
+                    @for (user of userList; track user.id) {
+                    <option [value]="user.id">{{ user.nombre }} {{ user.apellido }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="modal-actions-custom">
+            <button class="btn-secondary-custom" (click)="showAddTaskModal = false">Cancelar</button>
+            <button class="btn-primary-custom" (click)="crearTarea()">Crear Tarea</button>
+        </div>
+    </div>
+</div>
+}

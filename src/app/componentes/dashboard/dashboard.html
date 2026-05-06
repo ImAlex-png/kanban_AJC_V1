@@ -1,0 +1,65 @@
+<div class="main-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+        <h1 class="section-title" style="margin-bottom: 0;">Panel de Proyectos</h1>
+        <button class="btn-primary-custom" (click)="showAddModal = true" style="max-width: 200px;">+ Nuevo
+            Proyecto</button>
+    </div>
+
+    @if (tableros.length === 0) {
+    <div style="text-align: center; padding: 5rem; background: var(--bg-surface); border-radius: 32px; border: 2px dashed var(--border-color);">
+        <h2 style="color: var(--text-secondary); margin-bottom: 1.5rem;">Aún no tienes tableros</h2>
+        <button class="btn-primary-custom" (click)="showAddModal = true" style="max-width: 250px;">Crea tu primer
+            tablero</button>
+    </div>
+    } @else {
+    <div class="boards-grid">
+        @for (t of tableros; track t.id) {
+        <div [routerLink]="['/board', t.id]" class="board-card" [style.--accent-color]="t.fondo">
+            <div>
+                <h3>{{ t.nombre }}</h3>
+                <p>{{ t.descripcion }}</p>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>
+
+<!-- Add Board Modal (Redundant code, strictly speaking, but fine for separation) -->
+@if (showAddModal) {
+<div class="modal-backdrop-custom" (click)="showAddModal = false">
+    <div class="modal-custom" (click)="$event.stopPropagation()">
+        <h2 class="section-title" style="font-size: 1.75rem; margin-bottom: 2rem;">Crear nuevo tablero</h2>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Nombre del
+                proyecto</label>
+            <input type="text" [(ngModel)]="nuevoNombre" placeholder="P. ej. Lanzamiento App" class="input-custom">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label
+                style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Descripción</label>
+            <textarea [(ngModel)]="nuevoDesc" placeholder="Breve descripción de los objetivos..." class="input-custom"
+                style="height: 120px; resize: none;"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 2rem;">
+            <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Color de
+                fondo</label>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+                <input type="color" [(ngModel)]="nuevoColor"
+                    style="flex: 1; height: 50px; border: none; padding: 0; background: transparent; cursor: pointer;">
+                <div [style.background]="nuevoColor"
+                    style="width: 50px; height: 50px; border-radius: 12px; border: 4px solid var(--bg-surface); box-shadow: 0 0 0 1px var(--border-color);">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions-custom">
+            <button class="btn-secondary-custom" (click)="showAddModal = false">Descartar</button>
+            <button class="btn-primary-custom" (click)="crearTablero()">Crear proyecto</button>
+        </div>
+    </div>
+</div>
+}

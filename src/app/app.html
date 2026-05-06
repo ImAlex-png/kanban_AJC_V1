@@ -1,0 +1,9 @@
+<app-header></app-header>
+<div style="display: flex; min-height: calc(100vh - 64px);">
+  <app-sidebar style="position: sticky; top: 0; height: calc(100vh - 64px); z-index: 50;"></app-sidebar>
+  <main style="flex: 1; padding: 0;">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+<!-- Footer might need adjustment or be removed if sidebar goes to bottom -->
+<!-- <app-footer></app-footer> -->
