@@ -28,8 +28,6 @@ export class Sidebar implements OnInit {
 
     ngOnInit(): void {
         this.refreshTableros();
-        // Subscribe to router events or service changes if needed to update active state
-        // For now, simpler approach: rely on routerLinkActive
     }
 
     refreshTableros(): void {
@@ -42,7 +40,6 @@ export class Sidebar implements OnInit {
             return;
         }
 
-        // Generate secure ID (Simple approach until Service update)
         const nuevo = this.tableroService.createTablero(this.nuevoNombre, this.nuevoDesc, this.nuevoColor);
         this.refreshTableros();
         this.showAddModal = false;
@@ -53,11 +50,10 @@ export class Sidebar implements OnInit {
 
     eliminarTablero(id: number, event: Event): void {
         event.stopPropagation();
-        event.preventDefault(); // Prevent navigation
+        event.preventDefault();
         if (confirm('¿Estas seguro de que quieres eliminar este tablero? Todos sus datos se perderán.')) {
             this.tableroService.deleteTablero(id);
             this.refreshTableros();
-            // If we are on this board, go home
             if (this.router.url.includes(`/board/${id}`)) {
                 this.router.navigate(['/']);
             }

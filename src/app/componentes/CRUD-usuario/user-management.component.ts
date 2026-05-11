@@ -29,7 +29,7 @@ export class UserManagementComponent {
     }
 
     crearUsuario(event: Event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
 
         if (!this.nuevoId || !this.nuevoNombre || !this.nuevoApellido || !this.nuevoEmail) {
             alert('Por favor complete todos los campos.');

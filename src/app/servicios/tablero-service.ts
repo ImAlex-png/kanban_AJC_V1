@@ -42,12 +42,12 @@ export class TableroService {
 
     this._columnas = [col1, col2, col3];
 
-    const usuario1: Usuario = { id: 1, nombre: 'Fran', apellido: 'Vergara', email: 'fran@example.com' };
+    const usuario1: Usuario = { id: 1, nombre: 'Alejandro', apellido: 'Jimenez', email: 'alejc2006@gmail.com' };
 
     this._tareas = [
-      { id: 101, nombre: 'Diseñar UI', descripcion: 'Diseñar la interfaz del tablero', fecha_creacion: new Date(), estimacion: 5, columna: col1, usuario: usuario1 },
-      { id: 102, nombre: 'Implementar Modelos', descripcion: 'Crear las interfaces TS', fecha_creacion: new Date(), estimacion: 3, columna: col2, usuario: usuario1 },
-      { id: 103, nombre: 'Configurar Angular', descripcion: 'Inicializar el proyecto', fecha_creacion: new Date(), estimacion: 2, columna: col3, usuario: usuario1 },
+      { id: 101, nombre: 'Diseñar Interfaz', descripcion: 'Diseñar la interfaz del proyecto', fecha_creacion: new Date(), estimacion: 5, columna: col1, usuario: usuario1 },
+      { id: 102, nombre: 'Implementar Backend Endpoints', descripcion: 'Crear los Endpoints del backend', fecha_creacion: new Date(), estimacion: 3, columna: col2, usuario: usuario1 },
+      { id: 103, nombre: 'Configurar Routers', descripcion: 'Configurar los Routers', fecha_creacion: new Date(), estimacion: 2, columna: col3, usuario: usuario1 },
     ];
   }
 

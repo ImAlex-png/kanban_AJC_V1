@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 export class Dashboard implements OnInit {
     public tableros: Tablero[] = [];
 
-    // Modal logic for creating board (could be duplicated or shared service)
     public showAddModal = false;
     public nuevoNombre = '';
     public nuevoDesc = '';
