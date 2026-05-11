@@ -17,7 +17,12 @@
 }
 
 .board-columns {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
   min-height: calc(100vh - 250px);
+  align-items: flex-start;
 }
 
 .column-wrapper {

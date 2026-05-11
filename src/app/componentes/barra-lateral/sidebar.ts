@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 export class Sidebar implements OnInit {
     public tableros: Tablero[] = [];
 
-    // Board form (Modal logic can be here or shared)
     public showAddModal = false;
     public nuevoNombre = '';
     public nuevoDesc = '';

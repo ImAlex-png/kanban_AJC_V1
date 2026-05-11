@@ -188,9 +188,9 @@ export class TableroService {
   // --- Usuario CRUD ---
 
   private _usuarios: Usuario[] = [
-    { id: 1, nombre: 'Francisco', apellido: 'Vergara', email: 'fran@example.com' },
-    { id: 2, nombre: 'Maria', apellido: 'Gonzalez', email: 'maria@example.com' },
-    { id: 3, nombre: 'Juan', apellido: 'Perez', email: 'juan@example.com' }
+    { id: 1, nombre: 'Alejandro', apellido: 'Jimenez', email: 'alejc2006@gmail.com' },
+    { id: 2, nombre: 'Salvador', apellido: 'Peinado', email: 'salvapeinado0507@gmail.com' },
+    { id: 3, nombre: 'Pepe', apellido: 'Pepesito', email: 'pepe@gmail.com' }
   ];
 
   getUsuarios(): Usuario[] {
@@ -204,7 +204,6 @@ export class TableroService {
     }
     const nuevo: Usuario = { id, nombre, apellido, email };
     this._usuarios.push(nuevo);
-    // Persist if using storage for users too? For now adhering to task requirement.
     return nuevo;
   }
 

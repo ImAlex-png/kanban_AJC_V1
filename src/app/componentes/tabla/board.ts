@@ -105,7 +105,7 @@ export class Board implements OnInit {
         this.selectedColId = null;
       }
     } else {
-      alert('Complete todos los campos de la tarea (Título min 3 car., Estimación, Usuario).');
+      alert('Complete todos los campos de la tarea.');
     }
   }
 
